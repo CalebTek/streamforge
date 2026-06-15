@@ -1,0 +1,11 @@
+<Project Sdk="Microsoft.NET.Sdk.Worker">
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\StreamForge.Core\StreamForge.Core.csproj" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.*" />
+  </ItemGroup>
+</Project>

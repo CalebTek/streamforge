@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <PackageId>StreamForge.Core</PackageId>
+    <Version>0.1.0</Version>
+    <Authors>StreamForge</Authors>
+    <Description>Core encoding orchestration primitives for StreamForge.</Description>
+    <PackageTags>ffmpeg;video;encoding;transcoding;hls</PackageTags>
+  </PropertyGroup>
+</Project>
