@@ -1,0 +1,26 @@
+# .NET build outputs
+bin/
+obj/
+*.user
+
+# NuGet artifacts
+artifacts/
+*.nupkg
+*.snupkg
+
+# IDE
+.vs/
+.vscode/
+*.suo
+*.sln.docstates
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Test results
+TestResults/
+coverage.cobertura.xml
+
+# Local FFmpeg output
+output/

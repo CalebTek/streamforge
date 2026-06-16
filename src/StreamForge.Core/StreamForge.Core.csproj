@@ -3,10 +3,25 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+
+    <!-- NuGet package identity -->
     <PackageId>StreamForge.Core</PackageId>
     <Version>0.1.0</Version>
-    <Authors>StreamForge</Authors>
-    <Description>Core encoding orchestration primitives for StreamForge.</Description>
-    <PackageTags>ffmpeg;video;encoding;transcoding;hls</PackageTags>
+    <Authors>CalebTek</Authors>
+    <Description>Core encoding orchestration primitives for StreamForge — FFmpeg command builder, progress parser, job models, and pluggable storage/persistence abstractions.</Description>
+    <PackageTags>ffmpeg;video;encoding;transcoding;hls;streaming</PackageTags>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <RepositoryType>git</RepositoryType>
+
+    <!-- Embed symbols for debugging consumers of the NuGet package -->
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\..\README.md" Pack="true" PackagePath="\" />
+  </ItemGroup>
 </Project>
