@@ -2,11 +2,12 @@
   <!--
     Force all projects in the solution to use the same EF Core patch version.
     MassTransit pulls Microsoft.EntityFrameworkCore.Relational 8.0.11 as a transitive
-    dependency; Npgsql.EntityFrameworkCore.PostgreSQL 8.0.11 needs 8.0.28.
-    Pinning here removes the MSB3277 "package downgrade" warnings across all projects.
+    dependency. PackageReference Update only overrides direct references, so it cannot
+    beat a transitive pull. Using Include here makes it a direct reference in every
+    project, ensuring 8.0.28 is always chosen as primary (fixes MSB3277).
   -->
   <ItemGroup>
-    <PackageReference Update="Microsoft.EntityFrameworkCore"          Version="8.0.28" />
-    <PackageReference Update="Microsoft.EntityFrameworkCore.Relational" Version="8.0.28" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="8.0.28" />
+    <PackageReference Update="Microsoft.EntityFrameworkCore"             Version="8.0.28" />
   </ItemGroup>
 </Project>
