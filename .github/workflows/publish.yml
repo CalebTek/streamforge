@@ -1,0 +1,59 @@
+name: Publish StreamForge.Core to NuGet.org
+
+on:
+  push:
+    tags:
+      - 'v*'           # triggers on v0.1.0, v1.0.0, etc.
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      id-token: write  # required for NuGet Trusted Publishing (OIDC)
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.x'
+
+      - name: Restore
+        run: dotnet restore
+
+      - name: Build
+        run: dotnet build src/StreamForge.Core/StreamForge.Core.csproj --configuration Release --no-restore
+
+      - name: Test
+        run: dotnet test tests/StreamForge.Tests/StreamForge.Tests.csproj --configuration Release --no-build
+
+      - name: Pack
+        run: |
+          dotnet pack src/StreamForge.Core/StreamForge.Core.csproj \
+            --configuration Release \
+            --no-build \
+            --output ./artifacts \
+            -p:PackageVersion=${{ github.ref_name }}
+
+      # ── Trusted Publishing (keyless) ──────────────────────────────────────────
+      # Requires: nuget.org → Account → Trusted Publishers → Add GitHub Actions
+      # Fill in: owner, repo = StreamForge, workflow = publish.yml
+      # Once configured, this step needs NO stored secret.
+      - name: Get NuGet OIDC token
+        id: oidc
+        run: |
+          TOKEN=$(curl -fsSL \
+            -H "Authorization: bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN" \
+            "${ACTIONS_ID_TOKEN_REQUEST_URL}&audience=nuget.org" | jq -r '.value')
+          echo "::add-mask::$TOKEN"
+          echo "token=$TOKEN" >> "$GITHUB_OUTPUT"
+
+      - name: Push to NuGet.org
+        run: |
+          dotnet nuget push ./artifacts/*.nupkg \
+            --source https://api.nuget.org/v3/index.json \
+            --api-key "${{ steps.oidc.outputs.token }}" \
+            --skip-duplicate
