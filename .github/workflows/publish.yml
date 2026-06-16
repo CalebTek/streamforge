@@ -25,10 +25,10 @@ jobs:
         run: dotnet restore
 
       - name: Build
-        run: dotnet build src/StreamForge.Core/StreamForge.Core.csproj --configuration Release --no-restore
+        run: dotnet build --configuration Release --no-restore
 
       - name: Test
-        run: dotnet test tests/StreamForge.Tests/StreamForge.Tests.csproj --configuration Release --no-build
+        run: dotnet test tests/StreamForge.Tests/StreamForge.Tests.csproj --configuration Release --no-build --no-restore
 
       - name: Pack
         run: |
