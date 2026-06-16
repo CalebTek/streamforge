@@ -25,7 +25,14 @@ jobs:
         run: dotnet build --configuration Release --no-restore
 
       - name: Test
-        run: dotnet test --configuration Release --no-build --verbosity normal
+        run: dotnet test --configuration Release --no-build --verbosity normal --collect:"XPlat Code Coverage"
+
+      - name: Upload coverage
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: coverage
+          path: '**/coverage.cobertura.xml'
 
   pack:
     needs: build
@@ -48,8 +55,8 @@ jobs:
           name: nupkg
           path: ./artifacts/*.nupkg
 
-      # Publishing to NuGet.org is intentionally left as a manual, opt-in step.
-      # To enable it, add a NUGET_API_KEY repository secret and uncomment:
-      #
-      # - name: Push to NuGet.org
-      #   run: dotnet nuget push ./artifacts/*.nupkg --api-key "${{ secrets.NUGET_API_KEY }}" --source https://api.nuget.org/v3/index.json --skip-duplicate
+      - name: Push to NuGet.org
+        if: env.NUGET_API_KEY != ''
+        env:
+          NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
+        run: dotnet nuget push ./artifacts/*.nupkg --api-key "$NUGET_API_KEY" --source https://api.nuget.org/v3/index.json --skip-duplicate
